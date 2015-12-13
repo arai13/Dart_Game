@@ -1,0 +1,265 @@
+<!---------------------------------------
+Webpage: dartgame.html
+Author: Ashutosh Rai
+Date: November, 2015
+----------------------------------------->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dart Game - Ash Rai</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Bitter:700' rel='stylesheet' type='text/css'>
+    <style>
+        .circle {
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 20px;
+            position: relative;
+            top: 1.2em;
+            left: 1.2em;
+            display: block;
+        }
+        
+        .circle-white {
+            background: white;
+        }
+        
+        .circle-black {
+            background: black;
+        }
+        
+        .circle-red {
+            background: firebrick;
+        }
+        
+        #circle-orange {
+            background: orange;
+            height: 2%;
+            width: 2%;
+            position: absolute;
+            margin-left: 45.2%;
+            margin-top: 44%;
+        }
+        
+        .game-title {
+            border-style: double;
+            border-width: 0.5em;
+            background: white;
+            padding: 2em 2em 2em 2em;
+            margin: 1em 1em 1em 1em;
+        }
+        
+        .table td {
+            text-align: center;
+        }
+        
+        .table th {
+            text-align: center;
+        }
+        
+        .rules {
+            background: white;
+            margin-left: 3em;
+            margin-top: 3em;
+            border-radius: 10%
+        }
+    </style>
+</head>
+
+<body style="background-color: lightgrey;">
+    <div class="game-title">
+        <h1 align="center" style="font-family: 'Bitter', serif;">Dart Game</h1>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4">
+                <!-------The actual dart board cunstruction ----------
+                <div class="circle circle-white" style="width: 30em; height: 30em;">
+                    <div class="circle circle-black" style="width: 27.5em; height: 27.5em;">
+                        <div class="circle circle-white" style="width: 25em; height: 25em;">
+                            <div class="circle circle-black" style="width: 22.5em; height: 22.5em;">
+                                <div class="circle circle-white" style="width: 20em; height: 20em;">
+                                    <div class="circle circle-black" style="width: 17.5em; height: 17.5em;">
+                                        <div class="circle circle-white" style="width: 15em; height: 15em;">
+                                            <div class="circle circle-black" style="width: 12.5em; height: 12.5em;">
+                                                <div class="circle circle-white" style="width: 10em; height: 10em;">
+                                                    <div class="circle circle-black" style="width: 7.5em; height: 7.5em;">
+                                                        <div class="circle circle-white" style="width: 5em; height: 5em;">
+                                                            <div class="circle circle-red" style="width: 2.5em; height: 2.5em;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                -------------End of dart board construction-------------------->
+                <img src="dart-board.jpg" width="100%" height="100%" class="img-circle" style="position: relative">
+                <div class="circle" id="circle-orange"></div>
+
+            </div>
+
+            <div class="col-xs-3" style="margin-top:2%">
+                <table class="table table-bordered" style="border-color: black;">
+                    <thead>
+                        <tr>
+                            <th>Trial</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td id="score1"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td id="score2"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td id="score3"></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td id="score4"></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td id="score5"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td id="score_total"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn-primary btn-lg btn-block" id="aim_btn">Aim</button>
+                <button class="btn-success btn-lg btn-block" id="restart_btn">Restart</button>
+            </div>
+            <div class="col-xs-4 rules">
+                <p class="h2" style="text-align: center;"><u>Rules of the Game</u></p>
+                <ol>
+                    <li>The orange pointer is the aim for your dart. The dart throw is a two step process where you first aim vertically and then horizontally to land a shot.</li>
+                    <li>When the pointer is moving vertically first, press the aim button whenever you are confident that it is close to the bull's eye vertically.</li>
+                    <li>After aiming vertically, the pointer will move horizontally. Similar to the vertizal pointer, now try to land the horizontal aspect clost to the bull's eye.</li>
+                    <li>The vertical and horizontal aspects together make a dart throw. Your score will be evaluated after this.</li>
+                    <li>You will get five trials in total. Good luck!</li>
+                </ol>
+            </div>
+        </div>
+        <!--row-->
+    </div>
+    <!--container-fluid-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+        var vertical = true; //boolean for vertical or horizontal direction of the aim pointer
+        var down = true; //boolean for direction of pointer for up or down
+        var right = true; //boolean for the direction of pointer for left or right
+        var hor_coor = 0; //horizontal coordinate of the pointer
+        var ver_coor = 0; //vertical coordinate of the pointer
+        var total = 0; //total score
+        var score = 0; //score for each trial
+        var distance, score_var; //distance of the pointer from the bull's eye, variable for idname of the score
+        var counter_trial = 0; //counter for the trial
+        var aim_target = document.getElementById("circle-orange"); //the aim pointer
+
+        function doAnimation() { //the function for the animation
+            if (vertical == true) { //checking if vertical or horizontal
+                if (down == true) { //checking if down or up
+                    $("#circle-orange").animate({
+                        top: '190px'
+                    }, 2000);
+                    down = false; //switching direction
+                } else if (down == false) {
+                    $("#circle-orange").animate({
+                        top: '-160px'
+                    }, 2000);
+                    down = true;
+                }
+            } else { //if horizontal direction
+                if (right == true) { //checking if left or right direction
+                    $("#circle-orange").animate({
+                        left: '190px'
+                    }, 2000);
+                    right = false; //switching direction
+                } else if (right == false) {
+                    $("#circle-orange").animate({
+                        left: '-160px'
+                    }, 2000);
+                    right = true;
+                }
+            }
+        }
+
+        setInterval(doAnimation, 3000); //continuously firing up the animation function
+
+        document.getElementById("aim_btn").addEventListener("click", //aim function for the aim button
+            function () {
+                if (vertical == true) { //calculate the horizontal coordinate
+                    hor_coor = aim_target.style.top; //extract the px of the horizontal coordinate
+                    hor_coor = hor_coor.replace("px", "");  //getting id of the px part
+                    hor_coor = hor_coor - 17; //fixing up the inital location error to make the actual center the reference point
+                    parseFloat(hor_coor); //parsing the string to a float
+                } else { 
+                    ver_coor = aim_target.style.left; //all processes similar to above
+                    ver_coor = ver_coor.replace("px", "");
+                    ver_coor = ver_coor - 17
+                    parseFloat(ver_coor);
+                    counter_trial++;
+                    write_score();
+                }
+                vertical = !vertical; //toggling the boolean for the direction
+                //console.log(vertical);
+            });
+
+
+        function write_score() { //function to calculate the score and write it in the table
+            score_var = "score" + counter_trial;
+            distance = Math.sqrt(Math.pow(hor_coor, 2) + Math.pow(ver_coor, 2)); //calculating the distance from the bull's eye
+            if (distance <= 2) {
+                score = 10;
+            } else if (2 < distance <= 23) {
+                score = 9;
+            } else if (23 < distance <= 41) {
+                score = 8;
+            } else if (41 < distance <= 59) {
+                score = 7;
+            } else if (59 < distance <= 77) {
+                score = 6;
+            } else if (77 < distance <= 95) {
+                score = 5;
+            } else if (95 < distance <= 113) {
+                score = 4;
+            } else if (113 < distance <= 131) {
+                score = 3;
+            } else if (131 < distance <= 149) {
+                score = 2;
+            } else if (149 < distance <= 167) {
+                score = 1;
+            } else {
+                score = 0;
+            }
+            total = total + score;
+            document.getElementById(score_var).innerHTML = score //wrting into the score table
+            document.getElementById("score_total").innerHTML = total; //writing into the total score
+
+        }
+
+        document.getElementById("restart_btn").addEventListener("click", function () { //refreshing the page to restart
+            window.location.reload(); 
+        });
+    </script>
+</body>
+
+</html>
